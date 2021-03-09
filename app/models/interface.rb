@@ -100,6 +100,10 @@ class Interface
       main_menu
     elsif answer == "exit!"
       custom_exit
+    elsif !recipe_cats.include?(answer)
+      warning_message
+      puts "\n"
+      list_by_cat_and_view
     else
       system 'clear'
       Recipe.where(category: answer).each { |recipe| puts recipe.recipe_name }
@@ -114,6 +118,9 @@ class Interface
   if answer == "back"
     system 'clear'
     list_by_cat_and_view
+  elsif Recipe.all.find_by(recipe_name: answer) == nil 
+    warning_message
+    list_and_view_helper
   else
     chosen_recipe = Recipe.all.find_by(recipe_name: answer)
     system 'clear'
@@ -122,7 +129,7 @@ class Interface
     puts "\n#{chosen_recipe.prep}"
     puts "\nYield: #{chosen_recipe.yield} servings"
   end
-  # helper for adding to favorite or go back
+  back_or_exit
 end
 
   def browse_all
@@ -134,7 +141,7 @@ end
     exit 0
   end
 
-  def back_to_main_or_exit
+  def back_or_exit
 
   end
 
