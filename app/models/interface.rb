@@ -64,6 +64,10 @@ class Interface
     puts "Sorry, those are not valid ingredients."
   end
 
+  def main_menu
+    puts "What would you like to do?"
+  end
+
 
 
 end
