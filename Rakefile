@@ -9,6 +9,12 @@ task :console do
   Pry.start
 end
 
+desc "Starts our app"
+task :pre_heat do
+  interface = Interface.new
+  interface.run
+end
+
 
 namespace :remind_me_about do
 
