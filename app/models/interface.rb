@@ -31,9 +31,9 @@ class Interface
   end
 
   def login
-    puts "Please enter your username"
+    puts "Please enter your username:"
     username = STDIN.gets.chomp
-    puts "Please enter your password"
+    puts "Please enter your password:"
     password = STDIN.gets.chomp
     @user = User.find_by(username: username, password: password)
     until @user
@@ -47,9 +47,9 @@ class Interface
   end
 
   def register
-    puts "Please enter a username"
+    puts "Please enter a username:"
     username = STDIN.gets.chomp
-    puts "Please enter a password"
+    puts "Please enter a password:"
     password = STDIN.gets.chomp
     if User.find_by(username: username)
       puts "That name is in use by another chef, please try again"
@@ -67,9 +67,9 @@ class Interface
 
   def main_menu
     puts "What would you like to do?"
-    puts "Enter 'browse' to browse all recipes by category"
-    puts "Enter 'favorites' to look through your favorite recipes"
-    puts "Enter 'exit!' to leave"
+    puts "Enter 'browse' to browse all recipes by category."
+    puts "Enter 'favorites' to look through your favorite recipes."
+    puts "Enter 'exit!' to leave."
 
     answer = STDIN.gets.chomp 
 
@@ -88,13 +88,54 @@ class Interface
     end
   end
 
+  def list_by_cat_and_view
+    recipe_cats = Recipe.all.map { |recipe| recipe.category }.uniq
+    recipe_cats.each { |cat| puts cat }
+    puts "\nEnter 'back' to return to the main menu."
+    puts "Enter 'exit!' to leave."
+    puts "Enter a category name to view that category's recipes:"
+    answer = STDIN.gets.chomp
+    if answer == "back"
+      system 'clear'
+      main_menu
+    elsif answer == "exit!"
+      custom_exit
+    else
+      system 'clear'
+      Recipe.where(category: answer).each { |recipe| puts recipe.recipe_name }
+      list_and_view_helper
+    end
+ end
+
+ def list_and_view_helper
+  puts "\nEnter 'back' to go back."
+  puts "Enter a recipe name:"
+  answer = STDIN.gets.chomp
+  if answer == "back"
+    system 'clear'
+    list_by_cat_and_view
+  else
+    chosen_recipe = Recipe.all.find_by(recipe_name: answer)
+    system 'clear'
+    puts "#{chosen_recipe.recipe_name}:"
+    puts "\n#{chosen_recipe.ingredients}"
+    puts "\n#{chosen_recipe.prep}"
+    puts "\nYield: #{chosen_recipe.yield} servings"
+  end
+  # helper for adding to favorite or go back
+end
+
   def browse_all
-    Recipe.list_by_cat_and_view  
+    list_by_cat_and_view  
   end
 
   def custom_exit
     puts "Thanks for dining with us! Have a great day!"
     exit 0
+  end
+
+  def back_to_main_or_exit
+
   end
 
 
