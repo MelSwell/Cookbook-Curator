@@ -2,8 +2,14 @@ User.destroy_all
 User.reset_pk_sequence
 Recipe.destroy_all
 Recipe.reset_pk_sequence
+FavoriteRecipe.destroy_all
+FavoriteRecipe.reset_pk_sequence
 
-melissa = User.create(username: "Melissa", password: "SomePassword")
+melissa = User.create(username: "Melissa", password: "abc123")
+seth = User.create(username: "Seth", password: "abc123")
+tess = User.create(username: "Tess", password: "abc123")
+tim = User.create(username: "Tim", password: "abc123")
+maury = User.create(username: "Maury", password: "abc123")
 
 
 chick_paprikash = Recipe.create(recipe_name: "Chicken Paprikash", prep: "1. Use paper towels to dry the chicken thoroughly. Reducing the moisture content on the surface of the chicken is essential to get it to brown.\n 
@@ -317,6 +323,15 @@ Chive and Onion cream cheese spread
 Butter lettuce, roughly chopped", yield: 1, category: "Lunch")
 
 
-fr1 = FavoriteRecipe.create(user_id: melissa.id, recipe_id: turkey_melt.id, category: turkey_melt.category)
+fr1 = FavoriteRecipe.create(user_id: melissa.id, recipe_id: huevos.id, category: huevos.category)
+fr2 = FavoriteRecipe.create(user_id: melissa.id, recipe_id: kdp.id, category: kdp.category)
+fr3 = FavoriteRecipe.create(user_id: seth.id, recipe_id: carbonara.id, category: carbonara.category)
+fr4 = FavoriteRecipe.create(user_id: seth.id, recipe_id: beef_bourguignon.id, category: beef_bourguignon.category)
+fr5 = FavoriteRecipe.create(user_id: tess.id, recipe_id: hbg_chicken.id, category: hbg_chicken.category)
+fr6 = FavoriteRecipe.create(user_id: tess.id, recipe_id: eggs_benny.id, category: eggs_benny.category)
+fr7 = FavoriteRecipe.create(user_id: tim.id, recipe_id: pancakes.id, category: pancakes.category)
+fr8 = FavoriteRecipe.create(user_id: tim.id, recipe_id: turkey_melt.id, category: turkey_melt.category)
+fr9 = FavoriteRecipe.create(user_id: maury.id, recipe_id: egg_roll_bowl.id, category: egg_roll_bowl.category)
+fr10 = FavoriteRecipe.create(user_id: maury.id, recipe_id: chick_potpie.id, category: chick_potpie.category)
 
 puts "Seeded! Way to go!!"
