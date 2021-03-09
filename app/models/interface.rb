@@ -6,6 +6,7 @@ class Interface
     welcome
     sleep(1.5)
     login_or_register
+    main_menu
   end
 
   def welcome
@@ -66,6 +67,23 @@ class Interface
 
   def main_menu
     puts "What would you like to do?"
+    puts "Enter 'browse' to browse all recipes by category"
+    puts "Enter 'favorites' to look through your favorite recipes"
+    puts "Enter 'exit!' to leave"
+
+    answer = STDIN.gets.chomp 
+
+    if answer == "browse"
+      system 'clear'
+      Recipe.browse_all_helper
+      
+    elsif answer == "favorites"
+      system 'clear'
+      browse_favorite_helper
+      #define method
+    else
+      warning_message
+    end
   end
 
 
