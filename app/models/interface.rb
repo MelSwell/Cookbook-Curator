@@ -75,15 +75,26 @@ class Interface
 
     if answer == "browse"
       system 'clear'
-      Recipe.browse_all_helper
+      browse_all
       
     elsif answer == "favorites"
       system 'clear'
       browse_favorite_helper
       #define method
+    elsif answer == "exit!"
+      custom_exit
     else
       warning_message
     end
+  end
+
+  def browse_all
+    Recipe.list_by_cat_and_view  
+  end
+
+  def custom_exit
+    puts "Thanks for dining with us! Have a great day!"
+    exit 0
   end
 
 
