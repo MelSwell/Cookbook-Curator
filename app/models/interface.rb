@@ -70,13 +70,10 @@ class Interface
     puts "Enter 'browse' to browse all recipes by category."
     puts "Enter 'favorites' to look through your favorite recipes."
     puts "Enter 'exit!' to leave."
-
     answer = STDIN.gets.chomp 
-
     if answer == "browse"
       system 'clear'
-      browse_all
-      
+      browse_all  
     elsif answer == "favorites"
       system 'clear'
       browse_favorites
@@ -161,11 +158,9 @@ class Interface
     end
   end
 
-
   def browse_favorites
     list_favorites_by_cat_and_view
   end
-
 
   def list_favorites_by_cat_and_view
     recipe_cats = @user.recipes.map { |recipe| recipe.category }.uniq
@@ -244,13 +239,9 @@ class Interface
     end
   end
 
-
-
   def custom_exit
     puts "Thanks for dining with us! Have a great day!"
     exit 0
   end
-
-
 
 end
