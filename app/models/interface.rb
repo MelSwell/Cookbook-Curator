@@ -79,13 +79,16 @@ class Interface
       
     elsif answer == "favorites"
       system 'clear'
-      browse_favorite_helper
-      #define method
+      browse_favorites
     elsif answer == "exit!"
       custom_exit
     else
       warning_message
     end
+  end
+
+  def browse_all
+    list_all_by_cat_and_view  
   end
 
   def list_all_by_cat_and_view
@@ -109,39 +112,35 @@ class Interface
       Recipe.where(category: answer).each { |recipe| puts recipe.recipe_name }
       list_all_and_view_helper
     end
- end
-
- def list_all_and_view_helper
-  puts "\nEnter 'back' to go back."
-  puts "Enter a recipe name:"
-  answer = STDIN.gets.chomp
-  if answer == "back"
-    system 'clear'
-    list_all_by_cat_and_view
-  elsif Recipe.all.find_by(recipe_name: answer) == nil 
-    warning_message
-    list_all_and_view_helper
-  else
-    chosen_recipe = Recipe.all.find_by(recipe_name: answer)
-    system 'clear'
-    puts "#{chosen_recipe.recipe_name}:"
-    puts "\n#{chosen_recipe.ingredients}"
-    puts "\n#{chosen_recipe.prep}"
-    puts "\nYield: #{chosen_recipe.yield} servings"
-    add_to_favorites_or_go_back(chosen_recipe)
-    main_menu
   end
-end
 
-  def browse_all
-    list_all_by_cat_and_view  
+  def list_all_and_view_helper
+   puts "\nEnter 'back' to go back."
+   puts "Enter a recipe name:"
+   answer = STDIN.gets.chomp
+    if answer == "back"
+      system 'clear'
+      list_all_by_cat_and_view
+    elsif Recipe.all.find_by(recipe_name: answer) == nil 
+      warning_message
+      list_all_and_view_helper
+    else
+      chosen_recipe = Recipe.all.find_by(recipe_name: answer)
+      system 'clear'
+      puts "#{chosen_recipe.recipe_name}:"
+      puts "\n#{chosen_recipe.ingredients}"
+      puts "\n#{chosen_recipe.prep}"
+      puts "\nYield: #{chosen_recipe.yield} servings"
+      add_to_favorites_or_go_back(chosen_recipe)
+      main_menu
+    end
   end
 
   def add_to_favorites_or_go_back(chosen_recipe)
     puts "\nWould you like to add this recipe to your favorites, or go back?"
     puts "Enter 'add' or 'back':"
     answer = STDIN.gets.chomp
-    if answer == "add"
+    if answer == "add" 
       @user.create_favorite(chosen_recipe)
     elsif answer == "back"
       system 'clear'
@@ -153,15 +152,63 @@ end
     end
   end
 
+
+  def browse_favorites
+    list_favorites_by_cat_and_view
+  end
+
+
+  def list_favorites_by_cat_and_view
+    recipe_cats = @user.recipes.map { |recipe| recipe.category }.uniq
+    recipe_cats.each { |cat| puts cat }
+    puts "\nEnter 'back' to return to the main menu."
+    puts "Enter 'exit!' to leave."
+    puts "Enter a category name to view that category's recipes:"
+    answer = STDIN.gets.chomp
+      if answer == "back"
+        system 'clear'
+        main_menu
+      elsif answer == "exit!"
+        custom_exit
+      elsif !recipe_cats.include?(answer)
+        warning_message
+        puts "\n"
+        list_favorites_by_cat_and_view
+      else
+        system 'clear'
+        @user.recipes.where(category: answer).each { |recipe| puts recipe.recipe_name }
+        list_favorites_and_view_helper
+      end
+  end
+
+  def list_favorites_and_view_helper
+    puts "\nEnter 'back' to go back."
+    puts "Enter a recipe name:"
+    answer = STDIN.gets.chomp
+    if answer == "back"
+      system 'clear'
+      list_favorites_by_cat_and_view
+    elsif @user.recipes.find_by(recipe_name: answer) == nil 
+      warning_message
+      list_favorites_and_view_helper
+    else
+      chosen_recipe = @user.recipes.find_by(recipe_name: answer)
+      system 'clear'
+      puts "#{chosen_recipe.recipe_name}:"
+      puts "\n#{chosen_recipe.ingredients}"
+      puts "\n#{chosen_recipe.prep}"
+      puts "\nYield: #{chosen_recipe.yield} servings"
+      main_menu
+    end
+  end
+
+
+
   def custom_exit
     puts "Thanks for dining with us! Have a great day!"
     exit 0
   end
 
-<<<<<<< HEAD
- 
-=======
 
->>>>>>> 05087192437ef2549e9fb090bd34fd112f861e0c
 
 end
