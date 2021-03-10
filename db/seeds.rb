@@ -325,7 +325,7 @@ Butter lettuce, roughly chopped", yield: 1, category: "Lunch")
 
 fr1 = FavoriteRecipe.create(user_id: melissa.id, recipe_id: huevos.id, category: huevos.category)
 fr2 = FavoriteRecipe.create(user_id: melissa.id, recipe_id: kdp.id, category: kdp.category)
-fr3 = FavoriteRecipe.create(user_id: seth.id, recipe_id: carbonara.id, category: carbonara.category)
+fr3 = FavoriteRecipe.create(user_id: seth.id, recipe_id: carbonara.id, category: carbonara.category, note: "This is not a note")
 fr4 = FavoriteRecipe.create(user_id: seth.id, recipe_id: beef_bourguignon.id, category: beef_bourguignon.category)
 fr5 = FavoriteRecipe.create(user_id: tess.id, recipe_id: hbg_chicken.id, category: hbg_chicken.category)
 fr6 = FavoriteRecipe.create(user_id: tess.id, recipe_id: eggs_benny.id, category: eggs_benny.category)

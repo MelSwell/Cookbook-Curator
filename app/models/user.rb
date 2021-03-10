@@ -5,10 +5,28 @@ class User < ActiveRecord::Base
 
     def create_favorite(chosen_recipe)
         FavoriteRecipe.create(user_id: self.id, recipe_id: chosen_recipe.id, category: chosen_recipe.category)
+        self.reload.favorite_recipes
     end
 
-    def favorites_recipe_ids
-       @user.favorite_recipes.map { |fr| fr.recipe_id}
+    def delete_favorite_recipe(chosen_recipe)
+        self.favorite_recipes.find_by(recipe_id: chosen_recipe.id).destroy
+        self.reload.favorite_recipes
+    end
+
+    def recipe_note(chosen_recipe)
+        self.favorite_recipes.find_by(recipe_id: chosen_recipe.id).note
+    end
+
+    def update_note(chosen_recipe, response)
+        favorite_recipe = self.favorite_recipes.find_by(recipe_id: chosen_recipe.id)
+        favorite_recipe.update(note: response)
+        self.reload.favorite_recipes
+    end
+
+    def delete_note(chosen_recipe)
+        favorite_recipe = self.favorite_recipes.find_by(recipe_id: chosen_recipe.id)
+        favorite_recipe.update(note: nil)
+        self.reload.favorite_recipes
     end
 
 end

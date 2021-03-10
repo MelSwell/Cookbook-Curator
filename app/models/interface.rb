@@ -66,7 +66,7 @@ class Interface
   end
 
   def main_menu
-    puts "What would you like to do?"
+    puts "\nWhat would you like to do?"
     puts "Enter 'browse' to browse all recipes by category."
     puts "Enter 'favorites' to look through your favorite recipes."
     puts "Enter 'exit!' to leave."
@@ -84,6 +84,7 @@ class Interface
       custom_exit
     else
       warning_message
+      main_menu
     end
   end
 
@@ -140,8 +141,16 @@ class Interface
     puts "\nWould you like to add this recipe to your favorites, or go back?"
     puts "Enter 'add' or 'back':"
     answer = STDIN.gets.chomp
-    if answer == "add" 
+    if answer == "add" && @user.favorite_recipes.exists?(recipe_id: chosen_recipe.id)
+      puts "You must really love this recipe! It's already in your favorites!"
+      sleep(2)
+      system 'clear'
+      list_all_by_cat_and_view
+    elsif answer == "add" 
       @user.create_favorite(chosen_recipe)
+      puts "Successfully added to favorites! Go get cookin'!"
+      sleep (2)
+      system 'clear'
     elsif answer == "back"
       system 'clear'
       browse_all
@@ -198,7 +207,40 @@ class Interface
       puts "\n#{chosen_recipe.ingredients}"
       puts "\n#{chosen_recipe.prep}"
       puts "\nYield: #{chosen_recipe.yield} servings"
-      main_menu
+      if @user.recipe_note(chosen_recipe) != nil
+        puts "\nNote to self: #{@user.recipe_note(chosen_recipe)}"
+      end
+      puts "\nEnter 'delete' to delete recipe from your favorites."
+      puts "Enter 'note' to edit or delete note"
+      puts "Enter 'main menu' to return to main menu"
+      answer = STDIN.gets.chomp
+      if answer == "delete"
+        @user.delete_favorite_recipe(chosen_recipe)
+        puts "Recipe deleted, so sad :("
+        sleep(2)
+        system 'clear'
+        main_menu
+      elsif answer == "note"
+        note_helper(chosen_recipe) 
+      elsif answer == "main menu"
+        system 'clear'
+        main_menu
+      end
+    end
+  end
+
+  def note_helper(chosen_recipe)
+    puts "Enter 'delete' to delete your note"
+    puts "Enter 'update' to add or update your note"
+    answer = STDIN.gets.chomp
+    if answer == "delete"
+      @user.delete_note(chosen_recipe)
+      list_favorites_by_cat_and_view
+    elsif answer == "update"
+      puts "What would you like to remind yourself about this recipe?"
+      response = STDIN.gets.chomp
+      @user.update_note(chosen_recipe, response)
+      list_favorites_by_cat_and_view
     end
   end
 
