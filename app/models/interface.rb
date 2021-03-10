@@ -42,6 +42,7 @@ class Interface
       system 'clear'
       login
     end
+    system 'clear'
     puts "Welcome back, chef #{@user.username}! Thanks for joining us again."
     @user
   end
@@ -57,6 +58,7 @@ class Interface
       register
     else
       @user = User.create(username: username, password: password)
+      system 'clear'
       puts "Thanks for joining us, chef #{@user.username}. Get it while it's hot!"
     end
   end
@@ -121,6 +123,7 @@ class Interface
       list_all_by_cat_and_view
     elsif Recipe.all.find_by(recipe_name: answer) == nil 
       warning_message
+      sleep(1.5)
       list_all_and_view_helper
     else
       chosen_recipe = Recipe.all.find_by(recipe_name: answer)
@@ -136,7 +139,9 @@ class Interface
 
   def add_to_favorites_or_go_back(chosen_recipe)
     puts "\nWould you like to add this recipe to your favorites, or go back?"
-    puts "Enter 'add' or 'back':"
+    puts "Enter 'add' to add to favorites"
+    puts "Enter 'back' to go back"
+    puts "Enter 'exit!' to leave"
     answer = STDIN.gets.chomp
     if answer == "add" && @user.favorite_recipes.exists?(recipe_id: chosen_recipe.id)
       puts "You must really love this recipe! It's already in your favorites!"
@@ -155,6 +160,8 @@ class Interface
       custom_exit
     else
       warning_message
+      sleep(1.5)
+      add_to_favorites_or_go_back(chosen_recipe)
     end
   end
 
@@ -176,7 +183,8 @@ class Interface
       custom_exit
     elsif !recipe_cats.include?(answer)
       warning_message
-      puts "\n"
+      sleep(1.5)
+      system 'clear'
       list_favorites_by_cat_and_view
     else
       system 'clear'
@@ -194,6 +202,7 @@ class Interface
       list_favorites_by_cat_and_view
     elsif @user.recipes.find_by(recipe_name: answer) == nil 
       warning_message
+      sleep(1.5)
       list_favorites_and_view_helper
     else
       chosen_recipe = @user.recipes.find_by(recipe_name: answer)
@@ -208,6 +217,7 @@ class Interface
       puts "\nEnter 'delete' to delete recipe from your favorites."
       puts "Enter 'note' to edit or delete note"
       puts "Enter 'main menu' to return to main menu"
+      puts "Enter 'exit!' to leave"
       answer = STDIN.gets.chomp
       if answer == "delete"
         @user.delete_favorite_recipe(chosen_recipe)
@@ -220,6 +230,13 @@ class Interface
       elsif answer == "main menu"
         system 'clear'
         main_menu
+      elsif answer == "exit!"
+        custom_exit
+      else
+        warning_message
+        sleep(1.5)
+        system 'clear'
+        list_favorites_by_cat_and_view
       end
     end
   end
@@ -230,11 +247,13 @@ class Interface
     answer = STDIN.gets.chomp
     if answer == "delete"
       @user.delete_note(chosen_recipe)
+      system 'clear'
       list_favorites_by_cat_and_view
     elsif answer == "update"
       puts "What would you like to remind yourself about this recipe?"
       response = STDIN.gets.chomp
       @user.update_note(chosen_recipe, response)
+      system 'clear'
       list_favorites_by_cat_and_view
     end
   end
