@@ -88,7 +88,7 @@ class Interface
     end
   end
 
-  def list_by_cat_and_view
+  def list_all_by_cat_and_view
     recipe_cats = Recipe.all.map { |recipe| recipe.category }.uniq
     recipe_cats.each { |cat| puts cat }
     puts "\nEnter 'back' to return to the main menu."
@@ -103,24 +103,24 @@ class Interface
     elsif !recipe_cats.include?(answer)
       warning_message
       puts "\n"
-      list_by_cat_and_view
+      list_all_by_cat_and_view
     else
       system 'clear'
       Recipe.where(category: answer).each { |recipe| puts recipe.recipe_name }
-      list_and_view_helper
+      list_all_and_view_helper
     end
  end
 
- def list_and_view_helper
+ def list_all_and_view_helper
   puts "\nEnter 'back' to go back."
   puts "Enter a recipe name:"
   answer = STDIN.gets.chomp
   if answer == "back"
     system 'clear'
-    list_by_cat_and_view
+    list_all_by_cat_and_view
   elsif Recipe.all.find_by(recipe_name: answer) == nil 
     warning_message
-    list_and_view_helper
+    list_all_and_view_helper
   else
     chosen_recipe = Recipe.all.find_by(recipe_name: answer)
     system 'clear'
@@ -128,12 +128,29 @@ class Interface
     puts "\n#{chosen_recipe.ingredients}"
     puts "\n#{chosen_recipe.prep}"
     puts "\nYield: #{chosen_recipe.yield} servings"
+    add_to_favorites_or_go_back(chosen_recipe)
+    main_menu
   end
-  back_or_exit
 end
 
   def browse_all
-    list_by_cat_and_view  
+    list_all_by_cat_and_view  
+  end
+
+  def add_to_favorites_or_go_back(chosen_recipe)
+    puts "\nWould you like to add this recipe to your favorites, or go back?"
+    puts "Enter 'add' or 'back':"
+    answer = STDIN.gets.chomp
+    if answer == "add"
+      @user.create_favorite(chosen_recipe)
+    elsif answer == "back"
+      system 'clear'
+      browse_all
+    elsif answer == "exit!"
+      custom_exit
+    else
+      warning_message
+    end
   end
 
   def custom_exit
@@ -141,9 +158,9 @@ end
     exit 0
   end
 
-  def back_or_exit
+  # def back_or_exit
 
-  end
+  # end
 
 
 
