@@ -169,20 +169,20 @@ class Interface
     puts "Enter 'exit!' to leave."
     puts "Enter a category name to view that category's recipes:"
     answer = STDIN.gets.chomp
-      if answer == "back"
-        system 'clear'
-        main_menu
-      elsif answer == "exit!"
-        custom_exit
-      elsif !recipe_cats.include?(answer)
-        warning_message
-        puts "\n"
-        list_favorites_by_cat_and_view
-      else
-        system 'clear'
-        @user.recipes.where(category: answer).each { |recipe| puts recipe.recipe_name }
-        list_favorites_and_view_helper
-      end
+    if answer == "back"
+      system 'clear'
+      main_menu
+    elsif answer == "exit!"
+      custom_exit
+    elsif !recipe_cats.include?(answer)
+      warning_message
+      puts "\n"
+      list_favorites_by_cat_and_view
+    else
+      system 'clear'
+      @user.recipes.where(category: answer).each { |recipe| puts recipe.recipe_name }
+      list_favorites_and_view_helper
+    end
   end
 
   def list_favorites_and_view_helper
