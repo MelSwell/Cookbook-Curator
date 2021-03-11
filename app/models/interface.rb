@@ -71,6 +71,7 @@ class Interface
     puts "\nWhat would you like to do?"
     puts "Enter 'browse' to browse all recipes by category"
     puts "Enter 'favorites' to look through your favorite recipes"
+    puts "Enter 'aspiring' to look through recipes you aspire to cook"
     puts "Enter 'exit!' to leave"
     answer = STDIN.gets.chomp 
     if answer.downcase.strip == "browse"
@@ -79,6 +80,9 @@ class Interface
     elsif answer.downcase.strip == "favorites"
       system 'clear'
       browse_favorites
+    elsif answer.downcase.strip == "aspiring"
+      system 'clear'
+      browse_aspiring
     elsif answer.downcase.strip == "exit!"
       custom_exit
     else
@@ -171,7 +175,7 @@ class Interface
   end
 
   def list_favorites_by_cat_and_view
-    @user.list_user_cats
+    @user.list_user_favorite_cats
     puts "\nEnter 'back' to return to the main menu"
     puts "Enter 'exit!' to leave"
     puts "Enter a category name to view that category's recipes:"
@@ -181,7 +185,7 @@ class Interface
       main_menu
     elsif answer.downcase.strip == "exit!"
       custom_exit
-    elsif !@user.list_user_cats.include?(answer.capitalize)
+    elsif !@user.list_user_favorite_cats.include?(answer.capitalize)
       warning_message
       sleep(1.5)
       list_favorites_by_cat_and_view
@@ -254,6 +258,32 @@ class Interface
       @user.update_note(chosen_recipe, response)
       system 'clear'
       list_favorites_by_cat_and_view
+    end
+  end
+
+  def browse_aspiring
+    list_aspirings_by_cat_and_view
+  end
+
+  def list_aspirings_by_cat_and_view
+    @user.list_aspiring_cats
+    puts "\nEnter 'back' to return to the main menu"
+    puts "Enter 'exit!' to leave"
+    puts "Enter a category name to view that category's recipes:"
+    answer = STDIN.gets.chomp
+    if answer.downcase.strip == "back"
+      system 'clear'
+      main_menu
+    elsif answer.downcase.strip == "exit!"
+      custom_exit
+    elsif !@user.list_aspiring_cats.include?(answer.capitalize)
+      warning_message
+      sleep(1.5)
+      list_aspirings_by_cat_and_view
+    else
+      system 'clear'
+      @user.list_aspiring_names_by_cat(answer.capitalize)
+      # list_favorites_and_view_helper
     end
   end
 

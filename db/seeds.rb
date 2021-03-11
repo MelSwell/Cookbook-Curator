@@ -4,6 +4,8 @@ Recipe.destroy_all
 Recipe.reset_pk_sequence
 FavoriteRecipe.destroy_all
 FavoriteRecipe.reset_pk_sequence
+AspiringRecipe.destroy_all
+AspiringRecipe.reset_pk_sequence
 
 melissa = User.create(username: "Melissa", password: "abc123")
 seth = User.create(username: "Seth", password: "abc123")
@@ -335,5 +337,14 @@ fr9 = FavoriteRecipe.create(user_id: maury.id, recipe_id: egg_roll_bowl.id, cate
 fr10 = FavoriteRecipe.create(user_id: maury.id, recipe_id: chick_potpie.id, category: chick_potpie.category)
 
 ar1 = AspiringRecipe.create(user_id: maury.id, recipe_id: turkey_melt.id, category: turkey_melt.category)
+ar2 = AspiringRecipe.create(user_id: melissa.id, recipe_id: sesame_noodles.id, category: sesame_noodles.category)
+ar3 = AspiringRecipe.create(user_id: melissa.id, recipe_id: sweet_potato_tostadas.id, category: sweet_potato_tostadas.category)
+ar4 = AspiringRecipe.create(user_id: seth.id, recipe_id: hbg_chicken.id, category: hbg_chicken.category)
+ar5 = AspiringRecipe.create(user_id: seth.id, recipe_id: salmon_bowl.id, category: salmon_bowl.category)
+ar6 = AspiringRecipe.create(user_id: tess.id, recipe_id: brownies.id, category: brownies.category)
+ar7 = AspiringRecipe.create(user_id: tess.id, recipe_id: huevos.id, category: huevos.category)
+ar8 = AspiringRecipe.create(user_id: tim.id, recipe_id: pancakes.id, category: pancakes.category)
+ar9 = AspiringRecipe.create(user_id: tim.id, recipe_id: shortbread.id, category: shortbread.category)
+ar10 = AspiringRecipe.create(user_id: maury.id, recipe_id: chick_paprikash.id, category: chick_paprikash.category)
 
 puts "Seeded! Way to go!!"

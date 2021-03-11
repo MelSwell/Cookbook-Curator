@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
         self.reload.favorite_recipes
     end
 
-    def list_user_cats
+    def list_user_favorite_cats
         self.recipes.map { |recipe| recipe.category }.uniq
             .each { |cat| puts cat }
     end
@@ -42,6 +42,15 @@ class User < ActiveRecord::Base
         favorite_recipe = self.favorite_recipes.find_by(recipe_id: chosen_recipe.id)
         favorite_recipe.update(note: nil)
         self.reload.favorite_recipes
+    end
+
+    def list_aspiring_cats
+        self.all_aspirings.map { |recipe| recipe.category }.uniq
+            .each { |cat| puts cat }
+    end
+
+    def list_aspiring_names_by_cat(category)
+        self.all_aspirings.where(category: category).each { |recipe| puts recipe.recipe_name }
     end
 
 end
