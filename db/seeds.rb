@@ -13,6 +13,8 @@ maury = User.create(username: "Maury", password: "abc123")
 
 "Hello!"
 
+"Well, hellooooo!"
+
 chick_paprikash = Recipe.create(recipe_name: "Chicken Paprikash", prep: "1. Use paper towels to dry the chicken thoroughly. Reducing the moisture content on the surface of the chicken is essential to get it to brown.\n 
 2. Sprinkle the chicken evenly with the salt and black pepper.\n 
 3. Heat a heavy bottomed pot over medium heat until hot. Add the olive oil and swirl to coat the pan.\n
