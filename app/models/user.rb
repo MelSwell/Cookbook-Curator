@@ -8,9 +8,22 @@ class User < ActiveRecord::Base
         self.reload.favorite_recipes
     end
 
+    def list_user_cats
+        self.recipes.map { |recipe| recipe.category }.uniq
+            .each { |cat| puts cat }
+    end
+
+    def list_recipe_names_by_cat(category)
+        self.recipes.where(category: category).each { |recipe| puts recipe.recipe_name }
+    end
+
     def delete_favorite_recipe(chosen_recipe)
         self.favorite_recipes.find_by(recipe_id: chosen_recipe.id).destroy
         self.reload.favorite_recipes
+    end
+
+    def find_recipe_by_name(recipe_name)
+        self.recipes.find_by(recipe_name: recipe_name)
     end
 
     def recipe_note(chosen_recipe)
