@@ -44,6 +44,11 @@ class User < ActiveRecord::Base
         self.reload.favorite_recipes
     end
 
+    def create_aspiring(chosen_recipe)
+        AspiringRecipe.create(user_id: self.id, recipe_id: chosen_recipe.id, category: chosen_recipe.category)
+        self.reload.aspiring_recipes
+    end
+
     def list_aspiring_cats
         self.all_aspirings.map { |recipe| recipe.category }.uniq
             .each { |cat| puts cat }
@@ -51,6 +56,15 @@ class User < ActiveRecord::Base
 
     def list_aspiring_names_by_cat(category)
         self.all_aspirings.where(category: category).each { |recipe| puts recipe.recipe_name }
+    end
+
+    def find_aspiring_recipe_by_name(recipe_name)
+        self.all_aspirings.find_by(recipe_name: recipe_name)
+    end
+
+    def delete_aspiring_recipe(chosen_recipe)
+        self.aspiring_recipes.find_by(recipe_id: chosen_recipe.id).destroy
+        self.reload.aspiring_recipes
     end
 
 end

@@ -135,27 +135,27 @@ class Interface
       chosen_recipe = Recipe.find_by_name(answer)
       system 'clear'
       chosen_recipe.display_nicely
-      add_to_favorites_or_go_back(chosen_recipe)
+      add_to_aspirings_or_go_back(chosen_recipe)
       main_menu
     end
   end
     
     
 
-  def add_to_favorites_or_go_back(chosen_recipe)
-    puts "\nWould you like to add this recipe to your favorites, or go back?"
-    puts "Enter 'add' to add to favorites"
+  def add_to_aspirings_or_go_back(chosen_recipe)
+    puts "\nWould you like to add this recipe to your aspiring recipes, or go back?"
+    puts "Enter 'add' to add to your list of recipes you'd like to try"
     puts "Enter 'back' to go back"
     puts "Enter 'exit!' to leave"
     answer = STDIN.gets.chomp
-    if answer.downcase.strip == "add" && @user.favorite_recipes.exists?(recipe_id: chosen_recipe.id)
-      puts "You must really love this recipe! It's already in your favorites!"
+    if answer.downcase.strip == "add" && @user.aspiring_recipes.exists?(recipe_id: chosen_recipe.id)
+      puts "You must really love this recipe! You already aspire to cook this one!"
       sleep(2)
       system 'clear'
       list_all_by_cat_and_view
     elsif answer.downcase.strip == "add" 
-      @user.create_favorite(chosen_recipe)
-      puts "Successfully added to favorites! Go get cookin'!"
+      @user.create_aspiring(chosen_recipe)
+      puts "Successfully added to your list of recipes you'd like to cook! Go get cookin'!"
       sleep (2)
       system 'clear'
     elsif answer.downcase.strip == "back"
@@ -166,7 +166,7 @@ class Interface
     else
       warning_message
       sleep(1.5)
-      add_to_favorites_or_go_back(chosen_recipe)
+      add_to_aspirings_or_go_back(chosen_recipe)
     end
   end
 
@@ -283,9 +283,61 @@ class Interface
     else
       system 'clear'
       @user.list_aspiring_names_by_cat(answer.capitalize)
-      # list_favorites_and_view_helper
+      list_aspirings_and_view_helper
     end
   end
+
+  def list_aspirings_and_view_helper
+   puts "\nEnter 'back' to go back"
+   puts "Enter 'exit!' to leave"
+   puts "Enter a recipe name:"
+   answer = STDIN.gets.chomp
+    if answer.downcase.strip == "back"
+      system 'clear'
+      list_aspirings_by_cat_and_view
+    elsif answer.downcase.strip == "exit!"
+      custom_exit
+    elsif @user.find_aspiring_recipe_by_name(answer) == nil 
+      warning_message
+      sleep(1.5)
+      list_aspirings_and_view_helper
+    else 
+      chosen_recipe = @user.find_aspiring_recipe_by_name(answer)
+      chosen_recipe.display_nicely
+      move_to_favorites_or_go_back(chosen_recipe)
+      main_menu
+    end
+  end
+
+  def move_to_favorites_or_go_back(chosen_recipe)
+    puts "\nWould you like to move this recipe to your favorites, or go back?"
+    puts "Enter 'move' to move to favorites"
+    puts "Enter 'back' to go back"
+    puts "Enter 'exit!' to leave"
+    answer = STDIN.gets.chomp
+    if answer.downcase.strip == "move" && @user.favorite_recipes.exists?(recipe_id: chosen_recipe.id)
+      puts "You must really love this recipe! It's already in your favorites!"
+      sleep(2)
+      system 'clear'
+      list_aspirings_by_cat_and_view
+    elsif answer.downcase.strip == "move" 
+      @user.create_favorite(chosen_recipe)
+      @user.delete_aspiring_recipe(chosen_recipe)
+      puts "Successfully moved to favorites! Go get cookin'!"
+      sleep (2)
+      system 'clear'
+    elsif answer.downcase.strip == "back"
+      system 'clear'
+      browse_all
+    elsif answer.downcase.strip == "exit!"
+      custom_exit
+    else
+      warning_message
+      sleep(1.5)
+      move_to_favorites_or_go_back(chosen_recipe)
+    end
+  end
+
 
   def custom_exit
     puts "Thanks for dining with us! Have a great day!"
