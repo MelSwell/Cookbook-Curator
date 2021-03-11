@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
 
     has_many :favorite_recipes
     has_many :recipes, through: :favorite_recipes
+    has_many :aspiring_recipes
+    has_many :all_aspirings, through: :aspiring_recipes, source: :recipe
 
     def create_favorite(chosen_recipe)
         FavoriteRecipe.create(user_id: self.id, recipe_id: chosen_recipe.id, category: chosen_recipe.category)

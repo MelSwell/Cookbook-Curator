@@ -334,4 +334,6 @@ fr8 = FavoriteRecipe.create(user_id: tim.id, recipe_id: turkey_melt.id, category
 fr9 = FavoriteRecipe.create(user_id: maury.id, recipe_id: egg_roll_bowl.id, category: egg_roll_bowl.category)
 fr10 = FavoriteRecipe.create(user_id: maury.id, recipe_id: chick_potpie.id, category: chick_potpie.category)
 
+ar1 = AspiringRecipe.create(user_id: maury.id, recipe_id: turkey_melt.id, category: turkey_melt.category)
+
 puts "Seeded! Way to go!!"
