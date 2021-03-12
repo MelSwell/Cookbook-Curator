@@ -310,8 +310,9 @@ class Interface
   end
 
   def move_to_favorites_or_go_back(chosen_recipe)
-    puts "\nWould you like to move this recipe to your favorites, or go back?"
+    puts "\nWould you like to move this recipe to your favorites, delete it, or go back?"
     puts "Enter 'move' to move to favorites"
+    puts "Enter 'delete' to remove this recipe"
     puts "Enter 'back' to go back"
     puts "Enter 'exit!' to leave"
     answer = STDIN.gets.chomp
@@ -326,6 +327,12 @@ class Interface
       puts "Successfully moved to favorites! Go get cookin'!"
       sleep (2)
       system 'clear'
+    elsif answer.downcase.strip == "delete"
+      @user.delete_aspiring_recipe(chosen_recipe)
+      puts "Successfully removed from this list!"
+      sleep(2)
+      system 'clear'
+      list_aspirings_by_cat_and_view
     elsif answer.downcase.strip == "back"
       system 'clear'
       browse_all
